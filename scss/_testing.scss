@@ -1,0 +1,22 @@
+body
+{
+    padding: 50px;
+}
+
+z-sample {
+    background: #FF5050;
+    color: #FFF;
+    text-align: center;
+}
+
+z-sample:nth-child(1) { background: #5050FF; }
+z-sample:nth-child(2) { background: #508050; }
+z-sample:nth-child(3) { background: #FFA550; }
+z-sample:nth-child(4) { background: #FFFF50; }
+z-sample:nth-child(5) { background: #805080; }
+z-sample:nth-child(6) { background: #50C0C4; }
+z-sample:nth-child(7) { background: #5050FF; }
+z-sample:nth-child(8) { background: #508050; }
+z-sample:nth-child(9) { background: #FFA550; }
+z-sample:nth-child(10) { background: #FFFF50; }
+z-sample:nth-child(11) { background: #805080; }

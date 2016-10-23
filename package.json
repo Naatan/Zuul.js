@@ -1,0 +1,20 @@
+{
+  "name": "zuul",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-preset-es2015": "^6.13.2",
+    "gulp": "*",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-file-include": "^0.14.0",
+    "gulp-flatten": "^0.3.1",
+    "gulp-sass": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

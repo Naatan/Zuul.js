@@ -1,0 +1,53 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="dist/css/zuul.css">
+        <script src="dist/js/zuul.js"></script>
+    </head>
+    <body>
+        
+        <h1>Flex hbox</h1>
+        <z-hbox>
+            <z-sample flex="1">1</z-sample>
+            <z-sample flex="2">2</z-sample>
+            <z-sample flex="1">3</z-sample>
+        </z-hbox>
+        
+        <h1>Flex vbox</h1>
+        <z-vbox height="100">
+            <z-sample flex="1">1</z-sample>
+            <z-sample flex="2">2</z-sample>
+            <z-sample flex="1">3</z-sample>
+        </z-vbox>
+        
+        <h1>Flex hbox reverse</h1>
+        <z-hbox dir="reverse">
+            <z-sample flex="1">1</z-sample>
+            <z-sample flex="2">2</z-sample>
+            <z-sample flex="1">3</z-sample>
+        </z-hbox>
+        
+        <h1>Flex hbox center</h1>
+        <z-hbox flex="1" align="center" pack="center" height="50" style="border: 1px dotted black;">
+            <z-sample>1</z-sample>
+            <z-sample>2</z-sample>
+            <z-sample>3</z-sample>
+        </z-hbox>
+        
+        <h1>Flex vbox center</h1>
+        <z-vbox flex="1" align="center" pack="center" height="50" style="border: 1px dotted black;">
+            <z-sample>1</z-sample>
+            <z-sample>2</z-sample>
+            <z-sample>3</z-sample>
+        </z-vbox>
+        
+        <h1>Label</h1>
+        <z-label>foo</z-label>
+
+    </body>
+</html>
