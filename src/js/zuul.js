@@ -14,6 +14,8 @@ class Zuul {
         
         var event = new CustomEvent(`registered_${element.name}`);
         document.dispatchEvent(event);
+        
+        console.debug(`Registered ${element.name}`);
     }
     
     getElement(name)
@@ -106,20 +108,45 @@ class ImportElement extends BaseElement {
             document.body.appendChild(wrapper);
         }
         
-        var http = new XMLHttpRequest();
-        http.open('get', this.getAttribute("href"));
-        http.onreadystatechange = handleResponse;
-        http.send(null);
-
-        function handleResponse()
+        var hrefs = [];
+        if (this.hasAttribute("href"))
         {
-            if (http.readyState == 4)
-            {
-                wrapper.insertAdjacentHTML("beforeend", http.responseText.trim());
-            }
+            hrefs = this.getAttribute("href").split(",");
         }
+        else if (this.hasAttribute("preset"))
+        {
+            hrefs = ImportElement.preset[this.getAttribute("preset")] || [];
+        }
+        
+        hrefs.forEach((href) =>
+        {
+            var http = new XMLHttpRequest();
+            http.open('get', href);
+            http.onreadystatechange = handleResponse;
+            http.send(null);
+    
+            function handleResponse()
+            {
+                if (http.readyState == 4)
+                {
+                    wrapper.insertAdjacentHTML("beforeend", http.responseText.trim());
+                }
+            }
+        });
     }
 }
+
+ImportElement.preset = {
+    "all": [
+        "elements/box.html",
+        "elements/vbox.html",
+        "elements/hbox.html",
+        "elements/label.html",
+        "elements/listbox.html",
+        "elements/listitem.html",
+        "elements/sample.html"
+    ]
+};
 
 class ZElement extends HTMLElement {
     
@@ -127,6 +154,8 @@ class ZElement extends HTMLElement {
     createdCallback()
     {
         this.name = this.getAttribute("element");
+        
+        console.debug(`Created ${this.name} base element`)
         
         // Ensure the parent element is ready before creating this one
         if (this.hasAttribute("extends"))
