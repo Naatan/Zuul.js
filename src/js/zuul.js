@@ -11,6 +11,9 @@ class Zuul {
             return console.error(`Element ${element.name} has already been registered`);
         
         this.elements[element.name] = element;
+        
+        var event = new CustomEvent(`registered_${element.name}`);
+        document.dispatchEvent(event);
     }
     
     getElement(name)
@@ -125,6 +128,18 @@ class ZElement extends HTMLElement {
     {
         this.name = this.getAttribute("element");
         
+        // Ensure the parent element is ready before creating this one
+        if (this.hasAttribute("extends"))
+        {
+            var parent = this.getAttribute("extends");
+            if ( ! zuul.getElement(parent))
+            {
+                var args = Array.prototype.slice(arguments, 0);
+                document.addEventListener(`registered_${parent}`, () => this.createdCallback.apply(this, args));
+                return;
+            }
+        }
+        
         if ( ! this.name)
             return console.error("z-element is missing element attribute");
 
@@ -191,7 +206,6 @@ class ZElement extends HTMLElement {
         
         for (let child of element.getStyleAsArray())
         {
-            console.log("Append Style");
             this.appendToTemplate(child.cloneNode(true));
         }
         
