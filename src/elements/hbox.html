@@ -1,0 +1,26 @@
+<z-element element="HboxElement" extends="BoxElement">
+    
+    <template>
+        <style>
+            
+            :host
+            {
+                flex-direction: row;
+            }
+            
+            :host[dir="reverse"]
+            {
+                flex-direction: row-reverse;
+            }
+            
+        </style>
+    </template>
+    
+    <script>
+        
+        class HboxElement {}
+        document.registerElement('z-hbox', HboxElement);
+        
+    </script>
+    
+</z-element>

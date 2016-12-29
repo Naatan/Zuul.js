@@ -1,0 +1,48 @@
+<z-element element="ListboxElement" extends="VboxElement">
+    
+    <template>
+        <style>
+            :host
+            {
+                min-height: 2rem;
+                overflow: auto;
+            }
+        </style>
+        
+        <z-vbox flex="1" class="outer">
+            <slot></slot>
+        </z-vbox>
+    </template>
+    
+    <script>
+        
+        class ListboxElement {
+            
+            onCreated()
+            {
+                this.addEventListener("click", this.onSelect);
+            }
+            
+            onAttached()
+            {
+            }
+            
+            onDetached()
+            {
+            }
+            
+            onAttributeChanged(attr, oldVal, newVal) {
+            }
+            
+            onSelect(e)
+            {
+                console.log(e);
+            }
+            
+        }
+        
+        document.registerElement('z-listbox', ListboxElement);
+        
+    </script>
+    
+</z-element>

@@ -1,0 +1,26 @@
+<z-element element="VboxElement" extends="BoxElement">
+    
+    <template>
+        <style>
+            
+            :host
+            {
+                flex-direction: column;
+            }
+            
+            :host[dir="reverse"]
+            {
+                flex-direction: column-reverse;
+            }
+            
+        </style>
+    </template>
+    
+    <script>
+        
+        class VboxElement {}
+        document.registerElement('z-vbox', VboxElement);
+        
+    </script>
+    
+</z-element>

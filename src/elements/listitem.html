@@ -1,0 +1,40 @@
+<z-element element="ListitemElement" extends="HboxElement">
+    
+    <template>
+        <slot></slot>
+    </template>
+    
+    <script>
+        
+        class ListitemElement {
+            
+            onCreated()
+            {
+            }
+            
+            onAttached()
+            {
+                var parentNode = this.parentNode;
+                while (parentNode && parentNode.nodeName != "Z-LISTBOX")
+                    parentNode = parentNode.parentNode;
+                    
+                if ( ! parentNode)
+                    return console.error("Using a listitem element outside of a listbox, this will cause errors");
+                
+                this.listbox = parentNode;
+            }
+            
+            onDetached()
+            {
+            }
+            
+            onAttributeChanged(attr, oldVal, newVal) {
+            }
+            
+        }
+        
+        document.registerElement('z-listitem', ListitemElement);
+        
+    </script>
+    
+</z-element>

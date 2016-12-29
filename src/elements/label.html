@@ -1,0 +1,36 @@
+<z-element element="LabelElement">
+    
+    <template>
+        <style>
+            
+        </style>
+        
+        <span><slot></slot></span>
+    </template>
+    
+    <script>
+        
+        class LabelElement extends BaseElement {
+            
+            onCreated()
+            {
+            }
+            
+            onAttached()
+            {
+            }
+            
+            onDetached()
+            {
+            }
+            
+            onAttributeChanged(attr, oldVal, newVal) {
+            }
+            
+        }
+        
+        document.registerElement('z-label', LabelElement);
+        
+    </script>
+    
+</z-element>

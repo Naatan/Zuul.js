@@ -1,0 +1,45 @@
+@import "normalize";
+@import "testing";
+
+
+z-label, z-description
+{
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    
+    &[align="start"]
+    {
+        justify-content: flex-start;
+    }
+    
+    &[align="end"]
+    {
+        justify-content: flex-end;
+    }
+    
+    &[align="center"]
+    {
+        justify-content: center;
+    }
+    
+    &[pack="start"]
+    {
+        align-items: flex-start;
+    }
+    
+    &[pack="end"]
+    {
+        align-items: flex-end;
+    }
+    
+    &[pack="center"]
+    {
+        align-items: center;
+    }    
+}
+
+z-label::shadow span
+{
+    color: red;
+}
