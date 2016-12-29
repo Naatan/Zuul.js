@@ -2,7 +2,6 @@
  
 var gulp = require('gulp');
 var sass = require('gulp-sass');
-var babel = require('gulp-babel');
 var flatten = require('gulp-flatten');
 var autoprefixer = require('gulp-autoprefixer');
 var webserver = require('gulp-webserver');
@@ -39,11 +38,6 @@ gulp.task('sass', function ()
 gulp.task('js', ['sass', 'elements'], () =>
 {
     gulp.src('./src/js/zuul.js')
-            .pipe(babel({
-                presets: ['es2015']
-            }).on('error', function(e){
-                console.log(e);
-            }))
             .pipe(gulp.dest('./dist/js'));
 });
 
