@@ -52,7 +52,7 @@ class BaseElement extends HTMLElement {
         
         var element = this.nodeName.replace(/^Z-/, "");
         element = element[0].toUpperCase() + element.slice(1).toLowerCase();
-        var template = document.querySelector(`z-element[element="${element}Element"] template`);
+        var template = document.querySelector(`z-element[name="${element}Element"] template`);
         if (template)
         {
             template = template.cloneNode(true);
@@ -153,7 +153,7 @@ class ZElement extends HTMLElement {
     // Fires when an instance of the element is created.
     createdCallback()
     {
-        this.name = this.getAttribute("element");
+        this.name = this.getAttribute("name");
         
         console.debug(`Created ${this.name} base element`)
         
