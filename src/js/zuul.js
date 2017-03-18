@@ -137,14 +137,13 @@ class ImportElement extends BaseElement {
 }
 
 ImportElement.preset = {
-    "all": [
+    "zuul": [
         "elements/box.html",
         "elements/vbox.html",
         "elements/hbox.html",
         "elements/label.html",
         "elements/listbox.html",
-        "elements/listitem.html",
-        "elements/sample.html"
+        "elements/listitem.html"
     ]
 };
 
@@ -155,7 +154,7 @@ class ZElement extends HTMLElement {
     {
         this.name = this.getAttribute("name");
         
-        console.debug(`Created ${this.name} base element`)
+        console.debug(`Created ${this.name} base element`);
         
         // Ensure the parent element is ready before creating this one
         if (this.hasAttribute("extends"))
