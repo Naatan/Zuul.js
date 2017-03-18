@@ -1,4 +1,4 @@
-Zuul is a project I started with the intend of creative a UI framework
+Zuul is a project I started with the intend of creating a UI framework
 that is compatible with the API's and behavior of XUL.
 
 This will effectively mean two things
