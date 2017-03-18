@@ -5,6 +5,7 @@ var sass = require('gulp-sass');
 var flatten = require('gulp-flatten');
 var autoprefixer = require('gulp-autoprefixer');
 var webserver = require('gulp-webserver');
+var electron = require('electron-connect').server.create();
 
 gulp.task('default', function ()
 {
@@ -55,3 +56,14 @@ gulp.task('webserver', ['watchers'], function() {
         livereload: true
     }));
 });
+
+gulp.task('electron', ['watchers'], function() {
+    electron.start();
+
+    gulp.watch('./dist/css/*.css', electron.reload);
+    gulp.watch('./dist/**/*.html', electron.reload);
+    gulp.watch('./dist/js/*.js', electron.reload);
+
+    gulp.watch('./electron.js', electron.restart);
+});
+
