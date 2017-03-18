@@ -32,6 +32,14 @@ class ZuulHelpers {
     {
         return isNaN(val) ? val : val + "px";
     }
+
+    fire(element, name)
+    {
+        var event = document.createEvent("HTMLEvents");
+        event.initEvent(name, true, true);
+        event.name = name;
+        element.dispatchEvent(event);
+    }
     
 }
 var zuulHelpers = new ZuulHelpers();
@@ -41,15 +49,17 @@ class BaseElement extends HTMLElement {
     // Fires when an instance of the element is created.
     createdCallback()
     {
+        this._blockAttrChangeEvent = false;
+
         if (this.hasAttribute("flex"))
             this.style.flexGrow = this.getAttribute("flex");
         
         if (this.hasAttribute("height"))
             this.style.height = zuulHelpers.parsePx(this.getAttribute("height"));
-        
+
         if (this.hasAttribute("width"))
             this.style.width = zuulHelpers.parsePx(this.getAttribute("width"));
-        
+
         var element = this.nodeName.replace(/^Z-/, "");
         element = element[0].toUpperCase() + element.slice(1).toLowerCase();
         var template = document.querySelector(`z-element[name="${element}Element"] template`);
@@ -79,7 +89,11 @@ class BaseElement extends HTMLElement {
     }
     
     // Fires when an attribute was added, removed, or updated.
-    attributeChangedCallback(attr, oldVal, newVal) {
+    attributeChangedCallback(attr, oldVal, newVal)
+    {
+        if (this._blockAttrChangeEvent)
+            return;
+
         if (attr == "flex")
             this.style.flexGrow = newVal;
             
@@ -91,6 +105,18 @@ class BaseElement extends HTMLElement {
             
         if ("onAttributeChanged" in this)
             this.onAttributeChanged.apply(this, arguments);
+    }
+    
+    attr(name, value)
+    {
+        if (value !== undefined)
+        {
+            this._blockAttrChangeEvent = true;
+            this.setAttribute(name, value);
+            this._blockAttrChangeEvent = false;
+        }
+        
+        return this.getAttribute(name);
     }
     
 }

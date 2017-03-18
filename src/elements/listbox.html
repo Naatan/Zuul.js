@@ -20,25 +20,122 @@
             
             onCreated()
             {
-                this.addEventListener("click", this.onSelect);
+                this.selectedItems = [];
+                this._seltype = this.getAttribute("seltype") || "single";
             }
             
             onAttached()
             {
             }
-            
+
             onDetached()
             {
             }
-            
-            onAttributeChanged(attr, oldVal, newVal) {
-            }
-            
-            onSelect(e)
+
+            onAttributeChanged(attr, oldVal, newVal)
             {
-                console.log(e);
+                if (attr == "seltype")
+                {
+                    this._seltype = newVal;
+                }
+            }
+
+            get selectedItem()
+            {
+                for (let child of this.childNodes)
+                {
+                    if (child.selected)
+                    {
+                        return child;
+                    }
+                }
+            }
+
+            set selectedItem(elem)
+            {
+                if ( ! this._verifyIsChild(elem))
+                    return;
+
+                this.clearSelection();
+                this.addItemToSelection(elem);
+            }
+
+            get selectedIndex()
+            {
+                var i = 0;
+                for (let child of this.childNodes)
+                {
+                    if (child.selected)
+                    {
+                        return i;
+                    }
+                    i++;
+                }
+            }
+
+            set selectedIndex(index)
+            {
+                this.clearSelection();
+
+                var i = 0;
+                for (let child of this.childNodes)
+                {
+                    if (i == index)
+                    {
+                        this.selectedItem = child;
+                        break;
+                    }
+                    i++;
+                }
+            }
+
+            clearSelection()
+            {
+                for (let item of this.selectedItems)
+                {
+                    this.removeItemFromSelection(item);
+                }
+                this.selectedItems = [];
+            }
+
+            removeItemFromSelection(elem)
+            {
+                if ( ! this._verifyIsChild(elem))
+                    return;
+
+                elem._selected = false;
+
+                var index = this.selectedItems.indexOf(elem);
+                this.selectedItems.splice(index, 1);
+            }
+
+            addItemToSelection(elem)
+            {
+                if ( ! this._verifyIsChild(elem))
+                    return;
+
+                if (this._seltype != "multiple")
+                {
+                    this.clearSelection();
+                }
+
+                elem._selected = true;
+                zuulHelpers.fire(elem, "selected");
+
+                this.selectedItems.push(elem);
             }
             
+            _verifyIsChild(elem)
+            {
+                if ( ! (elem instanceof ListitemElement))
+                    return console.error("Element is not a listitem");
+
+                if (elem.listbox != this)
+                    return console.error("Element does not belong to this listbox");
+                
+                return true;
+            }
+
         }
         
         document.registerElement('z-listbox', ListboxElement);

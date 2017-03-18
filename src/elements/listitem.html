@@ -1,6 +1,14 @@
 <z-element name="ListitemElement" extends="HboxElement">
     
     <template>
+        <style>
+            :host([selected="true"])
+            {
+                background: Highlight;
+                color: HighlightText;
+            }
+        </style>
+
         <slot></slot>
     </template>
     
@@ -10,17 +18,19 @@
             
             onCreated()
             {
+                this.addEventListener("click", this._onToggle);
             }
             
             onAttached()
             {
                 var parentNode = this.parentNode;
-                while (parentNode && parentNode.nodeName != "Z-LISTBOX")
-                    parentNode = parentNode.parentNode;
-                    
+
                 if ( ! parentNode)
                     return console.error("Using a listitem element outside of a listbox, this will cause errors");
-                
+
+                if ( ! (parentNode instanceof ListboxElement))
+                    return console.error("listitem must be the child of a listbox");
+
                 this.listbox = parentNode;
             }
             
@@ -28,11 +38,62 @@
             {
             }
             
-            onAttributeChanged(attr, oldVal, newVal) {
+            onAttributeChanged(attr, oldVal, newVal)
+            {
+                if (attr == "selected")
+                {
+                    newVal = "" + newVal;
+                    this.selected = newVal != "0" && newVal != "false" && ! newVal;
+                }
             }
             
+            get _selected()
+            {
+                var value = this.attr("selected");
+                return value != "0" && value != "false" && !! value;
+            }
+
+            set _selected(value)
+            {
+                if (!! value)
+                {
+                    this.attr("selected", "true");
+                }
+                else
+                {
+                    this.removeAttribute("selected");
+                }
+            }
+
+            get selected()
+            {
+                return this._selected;
+            }
+
+            set selected(value)
+            {
+                this._selected = !! value;
+
+                if (!! value)
+                {
+                    this.listbox.addItemToSelection(this);
+                }
+                else
+                {
+                    this.listbox.removeItemFromSelection(this);
+                }
+            }
+
+            _onToggle()
+            {
+                if (this.selected)
+                    this.listbox.removeItemFromSelection(this);
+                else
+                    this.listbox.addItemToSelection(this);
+            }
+
         }
-        
+
         document.registerElement('z-listitem', ListitemElement);
         
     </script>
