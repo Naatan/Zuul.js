@@ -3,7 +3,7 @@
 <project id="21dd95d6-7349-4748-ac9d-d42b8536eea3" kpf_version="5" name="zuul.komodoproject">
 <preference-set idref="21dd95d6-7349-4748-ac9d-d42b8536eea3" id="project" preftype="project">
   <string relative="path" id="import_dirname"></string>
-  <string id="import_exclude_matches">*.*~;*.bak;*.tmp;CVS;.#*;*.pyo;*.pyc;.svn;.git;.hg;.bzr;*%25*;tmp*.html;.DS_Store;*.swp;*.kpf;*.komodoproject;.komodotools;__pycache__;.sass-cache</string>
+  <string id="import_exclude_matches">*.*~;*.bak;*.tmp;CVS;.#*;*.pyo;*.pyc;.svn;.git;.hg;.bzr;*%25*;tmp*.html;.DS_Store;*.swp;*.kpf;*.komodoproject;.komodotools;__pycache__;.sass-cache;dist;node_modules</string>
   <string id="last_local_directory">None</string>
   <string id="last_remote_directory">None</string>
   <long id="prefs_version">1</long>
