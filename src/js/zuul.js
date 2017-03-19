@@ -114,6 +114,13 @@ class BaseElement extends HTMLElement {
         this._blockAttrChangeEvent = false;
     }
     
+    removeAttributeSilent(name)
+    {
+        this._blockAttrChangeEvent = true;
+        this.removeAttribute(name);
+        this._blockAttrChangeEvent = false;
+    }
+
 }
 
 class ImportElement extends BaseElement {
