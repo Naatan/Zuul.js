@@ -2,18 +2,22 @@
     
     <template>
         <style>
-            
+
         </style>
         
-        <span><slot></slot></span>
+        <slot></slot>
     </template>
     
     <script>
-        
-        class LabelElement extends BaseElement {
+
+        class LabelElement {
             
             onCreated()
             {
+                if (this.hasAttribute("value"))
+                {
+                    this.innerText = this.getAttribute("value");
+                }
             }
             
             onAttached()
