@@ -1,0 +1,113 @@
+<z-element name="CheckboxElement" extends="HboxElement">
+
+    <template>
+        <style>
+            :host
+            {
+                user-select: none;
+                cursor: default;
+            }
+
+            :host [anonid="label"].hide
+            {
+                display: none;
+            }
+
+            :host [anonid="checkbox"]
+            {
+                width: 0.75rem;
+                height: 0.75rem;
+                margin-right: 0.5rem;
+
+                background: Window;
+                border: 1px solid ThreeDShadow;
+            }
+
+            :host([checked]) [anonid="checkbox"]
+            {
+                box-shadow: inset 0 0 0 2px Window;
+                background: ThreeDDarkShadow;
+            }
+        </style>
+
+        <z-hbox pack="center">
+            <z-box anonid="checkbox"></z-box>
+            <z-label anonid="label"><slot></slot></z-label>
+        </z-hbox>
+    </template>
+
+    <script>
+
+        class CheckboxElement {
+
+            onCreated()
+            {
+                this.checkbox = this.shadowDom.querySelector("[anonid=checkbox]");
+                this.label = this.shadowDom.querySelector("[anonid=label]");
+
+                if (this.hasAttribute("label"))
+                {
+                    this.innerText = this.getAttribute("label");
+                }
+
+                if ( ! this.innerText)
+                    this.label.classList.add("hide");
+
+                this.addEventListener("click", this.toggle);
+            }
+
+            onAttached()
+            {
+            }
+
+            onDetached()
+            {
+            }
+
+            onAttributeChanged(attr, oldVal, newVal)
+            {
+                if (attr == "checked")
+                {
+                    newVal = zuulHelpers.falsy(newVal);
+                    if ( ! newVal)
+                    {
+                        // Don't set the checked attribute at all if the value is falsy
+                        this.removeAttributeSilent("checked");
+                    }
+                }
+            }
+
+            get checked()
+            {
+                var value = this.getAttribute("checked");
+                return zuulHelpers.falsy(value);
+            }
+
+            set checked(value)
+            {
+                value = zuulHelpers.falsy(value);
+                if (value)
+                {
+                    this.setAttributeSilent("checked", "true");
+                    zuulHelpers.fire(this, "checked");
+                }
+                else
+                {
+                    this.removeAttributeSilent("checked");
+                }
+
+                zuulHelpers.fire(this, "command");
+            }
+
+            toggle()
+            {
+                this.checked = ! this.hasAttribute("checked");
+            }
+
+        }
+
+        document.registerElement('z-checkbox', CheckboxElement);
+
+    </script>
+
+</z-element>

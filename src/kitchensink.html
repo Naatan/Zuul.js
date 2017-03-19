@@ -13,84 +13,115 @@
         
         <z-import preset="zuul"></z-import>
 
-        <h1>Zuul Kitchensink</h1>
-        
-        <h2>Flex hbox</h2>
-        <z-hbox>
-            <z-box class="sample" flex="1">1</z-box>
-            <z-box class="sample" flex="2">2</z-box>
-            <z-box class="sample" flex="1">3</z-box>
-        </z-hbox>
-        
-        <h2>Flex vbox</h2>
-        <z-vbox height="100">
-            <z-box class="sample" flex="1">1</z-box>
-            <z-box class="sample" flex="2">2</z-box>
-            <z-box class="sample" flex="1">3</z-box>
-        </z-vbox>
-        
-        <h2>Flex hbox reverse</h2>
-        <z-hbox dir="reverse">
-            <z-box class="sample" flex="1">1</z-box>
-            <z-box class="sample" flex="2">2</z-box>
-            <z-box class="sample" flex="1">3</z-box>
-        </z-hbox>
-        
-        <h2>hbox center</h2>
-        <z-hbox align="center" pack="center" height="50" style="border: 1px dotted black;">
-            <z-box class="sample">1</z-box>
-            <z-box class="sample">2</z-box>
-            <z-box class="sample">3</z-box>
-        </z-hbox>
-        
-        <h2>vbox center</h2>
-        <z-vbox align="center" pack="center" height="50" style="border: 1px dotted black;">
-            <z-box class="sample">1</z-box>
-            <z-box class="sample">2</z-box>
-            <z-box class="sample">3</z-box>
-        </z-vbox>
-        
-        <h2>Label</h2>
-        <z-label>foo</z-label>
-        
-        <h2>Listbox</h2>
-        <z-hbox>
+        <z-vbox flex="1">
 
-            <z-vbox>
-                <h3>Single</h3>
-                <z-listbox width="300" height="100">
-                    <z-listitem>Item 1</z-listitem>
-                    <z-listitem>Item 2</z-listitem>
-                    <z-listitem>Item 3</z-listitem>
-                    <z-listitem>Item 4</z-listitem>
-                    <z-listitem>Item 5</z-listitem>
-                    <z-listitem>Item 6</z-listitem>
-                    <z-listitem>Item 7</z-listitem>
-                    <z-listitem>Item 8</z-listitem>
-                    <z-listitem>Item 9</z-listitem>
-                    <z-listitem>Item 10</z-listitem>
-                </z-listbox>
+            <h1>Zuul Kitchensink</h1>
+
+            <h2>Flex hbox</h2>
+            <z-hbox flex="1">
+                <z-box class="sample" flex="1">1</z-box>
+                <z-box class="sample" flex="2">2</z-box>
+                <z-box class="sample" flex="1">3</z-box>
+            </z-hbox>
+
+            <h2>Flex vbox</h2>
+            <z-vbox height="100" flex="1">
+                <z-box class="sample" flex="1">1</z-box>
+                <z-box class="sample" flex="2">2</z-box>
+                <z-box class="sample" flex="1">3</z-box>
             </z-vbox>
 
-            <z-hbox width="10"></z-hbox>
+            <h2>Flex hbox reverse</h2>
+            <z-hbox dir="reverse" flex="1">
+                <z-box class="sample" flex="1">1</z-box>
+                <z-box class="sample" flex="2">2</z-box>
+                <z-box class="sample" flex="1">3</z-box>
+            </z-hbox>
 
-            <z-vbox>
-                <h3>Multiple</h3>
-                <z-listbox width="300" height="100" seltype="multiple">
-                    <z-listitem>Item 1</z-listitem>
-                    <z-listitem>Item 2</z-listitem>
-                    <z-listitem>Item 3</z-listitem>
-                    <z-listitem>Item 4</z-listitem>
-                    <z-listitem>Item 5</z-listitem>
-                    <z-listitem>Item 6</z-listitem>
-                    <z-listitem>Item 7</z-listitem>
-                    <z-listitem>Item 8</z-listitem>
-                    <z-listitem>Item 9</z-listitem>
-                    <z-listitem>Item 10</z-listitem>
-                </z-listbox>
+            <h2>hbox align center</h2>
+            <z-hbox align="center" style="border: 1px dotted black;" flex="1">
+                <z-box class="sample">1</z-box>
+                <z-box class="sample">2</z-box>
+                <z-box class="sample">3</z-box>
+            </z-hbox>
+
+            <h2>hbox pack center</h2>
+            <z-hbox pack="center" height="50" style="border: 1px dotted black;" flex="1">
+                <z-box class="sample">1</z-box>
+                <z-box class="sample">2</z-box>
+                <z-box class="sample">3</z-box>
+            </z-hbox>
+
+            <h2>vbox align center</h2>
+            <z-vbox align="center" height="100" style="border: 1px dotted black;" flex="1">
+                <z-box class="sample">1</z-box>
+                <z-box class="sample">2</z-box>
+                <z-box class="sample">3</z-box>
             </z-vbox>
 
-        </z-hbox>
-        
+            <h2>vbox pack center</h2>
+            <z-vbox pack="center" style="border: 1px dotted black;" flex="1">
+                <z-box class="sample">1</z-box>
+                <z-box class="sample">2</z-box>
+                <z-box class="sample">3</z-box>
+            </z-vbox>
+
+            <h2>Label</h2>
+            <z-label>Label from innerText</z-label>
+            <z-label value="Label from attribute"></z-label>
+
+            <h2>Checkbox</h2>
+            <z-checkbox checked="true">Checked</z-checkbox>
+            <div>&nbsp;</div>
+            <z-checkbox>Unchecked</z-checkbox>
+
+            <h2>Radio</h2>
+            <z-radiogroup>
+                <z-radio>Radio 1</z-radio>
+                <div>&nbsp;</div>
+                <z-radio>Radio 2</z-radio>
+                <div>&nbsp;</div>
+                <z-radio>Radio 3</z-radio>
+            </z-radiogroup>
+
+            <h2>Listbox</h2>
+            <z-hbox>
+
+                <z-vbox>
+                    <h3>Single</h3>
+                    <z-listbox width="300" height="100">
+                        <z-listitem>Item 1</z-listitem>
+                        <z-listitem>Item 2</z-listitem>
+                        <z-listitem>Item 3</z-listitem>
+                        <z-listitem>Item 4</z-listitem>
+                        <z-listitem>Item 5</z-listitem>
+                        <z-listitem>Item 6</z-listitem>
+                        <z-listitem>Item 7</z-listitem>
+                        <z-listitem>Item 8</z-listitem>
+                        <z-listitem>Item 9</z-listitem>
+                        <z-listitem>Item 10</z-listitem>
+                    </z-listbox>
+                </z-vbox>
+
+                <z-hbox width="10"></z-hbox>
+
+                <z-vbox>
+                    <h3>Multiple</h3>
+                    <z-listbox width="300" height="100" seltype="multiple">
+                        <z-listitem>Item 1</z-listitem>
+                        <z-listitem>Item 2</z-listitem>
+                        <z-listitem>Item 3</z-listitem>
+                        <z-listitem>Item 4</z-listitem>
+                        <z-listitem>Item 5</z-listitem>
+                        <z-listitem>Item 6</z-listitem>
+                        <z-listitem>Item 7</z-listitem>
+                        <z-listitem>Item 8</z-listitem>
+                        <z-listitem>Item 9</z-listitem>
+                        <z-listitem>Item 10</z-listitem>
+                    </z-listbox>
+                </z-vbox>
+
+            </z-hbox>
+        </z-vbox>
     </body>
 </html>

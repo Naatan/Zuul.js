@@ -1,0 +1,124 @@
+<z-element name="RadioElement" extends="HboxElement">
+
+    <template>
+        <style>
+            :host
+            {
+                user-select: none;
+                cursor: default;
+            }
+
+            :host [anonid="label"].hide
+            {
+                display: none;
+            }
+
+            :host [anonid="radiobox"]
+            {
+                width: 0.75rem;
+                height: 0.75rem;
+                margin-right: 0.5rem;
+                border-radius: 0.5rem;
+
+                background: Window;
+                border: 1px solid ThreeDShadow;
+            }
+
+            :host([selected]) [anonid="radiobox"]
+            {
+                box-shadow: inset 0 0 0 2px Window;
+                background: ThreeDDarkShadow;
+            }
+        </style>
+
+        <z-hbox pack="center">
+            <z-box anonid="radiobox"></z-box>
+            <z-label anonid="label"><slot></slot></z-label>
+        </z-hbox>
+    </template>
+
+    <script>
+
+        class RadioElement {
+
+            onCreated()
+            {
+                this.radiobox = this.shadowDom.querySelector("[anonid=radiobox]");
+                this.label = this.shadowDom.querySelector("[anonid=label]");
+
+                if (this.hasAttribute("label"))
+                {
+                    this.innerText = this.getAttribute("label");
+                }
+
+                if ( ! this.innerText)
+                    this.label.classList.add("hide");
+
+                this.addEventListener("click", () => this.selected = true);
+            }
+
+            onAttached()
+            {
+                var parentNode = this.parentNode;
+
+                if ( ! parentNode)
+                    return console.error("Using a radio element outside of a radiogroup, this will cause errors");
+
+                if ( ! (parentNode instanceof RadiogroupElement))
+                    return console.error("radio must be the child of a radiogroup");
+
+                this.radiogroup = parentNode;
+            }
+
+            onDetached()
+            {
+            }
+
+            onAttributeChanged(attr, oldVal, newVal)
+            {
+                if (attr == "selected")
+                {
+                    newVal = zuulHelpers.falsy(newVal);
+                    if ( ! newVal)
+                    {
+                        // Don't set the selected attribute at all if the value is falsy
+                        this.removeAttributeSilent("selected");
+                    }
+                }
+            }
+
+            get selected()
+            {
+                var value = this.getAttribute("selected");
+                return zuulHelpers.falsy(value);
+            }
+
+            set selected(value)
+            {
+                value = zuulHelpers.falsy(value);
+                if (value)
+                {
+                    var oldSelected = this.radiogroup.selectedItem;
+                    if (oldSelected && this != oldSelected)
+                    {
+                        oldSelected.selected = false;
+                    }
+
+                    this.setAttributeSilent("selected", "true");
+                    zuulHelpers.fire(this, "selected");
+                }
+                else
+                {
+                    this.removeAttributeSilent("selected");
+                }
+
+                zuulHelpers.fire(this, "command");
+            }
+
+        }
+
+        document.registerElement('z-radio', RadioElement);
+
+    </script>
+
+</z-element>

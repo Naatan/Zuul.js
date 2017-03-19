@@ -176,7 +176,10 @@ ImportElement.preset = {
         "elements/hbox.html",
         "elements/label.html",
         "elements/listbox.html",
-        "elements/listitem.html"
+        "elements/listitem.html",
+        "elements/checkbox.html",
+        "elements/radiogroup.html",
+        "elements/radio.html",
     ]
 };
 

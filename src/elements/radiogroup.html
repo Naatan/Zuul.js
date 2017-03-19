@@ -1,0 +1,67 @@
+<z-element name="RadiogroupElement" extends="VboxElement">
+
+    <template>
+        <style>
+            :host
+            {
+                user-select: none;
+                cursor: default;
+            }
+        </style>
+
+        <z-vbox flex="1">
+            <slot></slot>
+        </z-vbox>
+    </template>
+
+    <script>
+
+        class RadiogroupElement {
+
+            onCreated()
+            {
+            }
+
+            onAttached()
+            {
+            }
+
+            onDetached()
+            {
+            }
+
+            onAttributeChanged(attr, oldVal, newVal)
+            {
+            }
+
+            get selectedItem()
+            {
+                return this.querySelector("z-radio[selected]");
+            }
+
+            set selectedItem(elem)
+            {
+                if ( ! _verifyIsChild(elem))
+                    return;
+
+                this.selectedItem.selected = true;
+            }
+
+            _verifyIsChild(elem)
+            {
+                if ( ! (elem instanceof RadioElement))
+                    return console.error("Element is not a radio");
+
+                if (elem.radiogroup != this)
+                    return console.error("Element does not belong to this radiogroup");
+
+                return true;
+            }
+
+        }
+
+        document.registerElement('z-radiogroup', RadiogroupElement);
+
+    </script>
+
+</z-element>
