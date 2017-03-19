@@ -40,6 +40,11 @@ class ZuulHelpers {
         event.name = name;
         element.dispatchEvent(event);
     }
+
+    falsy(value)
+    {
+        return value != "0" && value != "false" && !! value;
+    }
     
 }
 var zuulHelpers = new ZuulHelpers();
