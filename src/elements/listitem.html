@@ -2,6 +2,12 @@
     
     <template>
         <style>
+            :host
+            {
+                user-select: none;
+                cursor: default;
+            }
+
             :host([selected="true"])
             {
                 background: Highlight;
@@ -50,19 +56,23 @@
             get _selected()
             {
                 var value = this.getAttribute("selected");
-                return value != "0" && value != "false" && !! value;
+                return zuulHelpers.falsy(value);
             }
 
             set _selected(value)
             {
-                if (!! value)
+                value = zuulHelpers.falsy(value);
+                if (value)
                 {
                     this.setAttributeSilent("selected", "true");
+                    zuulHelpers.fire(this, "selected");
                 }
                 else
                 {
-                    this.removeAttribute("selected");
+                    this.removeAttributeSilent("selected");
                 }
+
+                zuulHelpers.fire(this, "command");
             }
 
             get selected()
