@@ -193,7 +193,7 @@ class ZElement extends HTMLElement {
         if (this.hasAttribute("extends"))
         {
             var parent = this.getAttribute("extends");
-            if ( ! zuul.getElement(parent))
+            if (parent != "BaseElement" && ! zuul.getElement(parent))
             {
                 var args = Array.prototype.slice(arguments, 0);
                 document.addEventListener(`registered_${parent}`, () => this.createdCallback.apply(this, args));
@@ -264,22 +264,27 @@ class ZElement extends HTMLElement {
     extend(name)
     {
         var element = zuul.getElement(name);
-        
-        for (let child of element.getStyleAsArray())
+        var parentScript;
+
+        if (element)
         {
-            this.appendToTemplate(child.cloneNode(true));
-        }
-        
-        if ( ! this.getMarkupAsArray().length)
-        {
-            for (let child of element.getMarkupAsArray())
+            for (let child of element.getStyleAsArray())
             {
                 this.appendToTemplate(child.cloneNode(true));
             }
+
+            if ( ! this.getMarkupAsArray().length)
+            {
+                for (let child of element.getMarkupAsArray())
+                {
+                    this.appendToTemplate(child.cloneNode(true));
+                }
+            }
+
+            parentScript = element.getScript();
         }
         
         var script = this.getScript();
-        var parentScript = element.getScript();
         if (script)
         {
             var rx = new RegExp("(class\\s+" + this.name + ")(\\s*(?:{|$))");
