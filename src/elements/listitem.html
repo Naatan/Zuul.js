@@ -49,7 +49,7 @@
             
             get _selected()
             {
-                var value = this.attr("selected");
+                var value = this.getAttribute("selected");
                 return value != "0" && value != "false" && !! value;
             }
 
@@ -57,7 +57,7 @@
             {
                 if (!! value)
                 {
-                    this.attr("selected", "true");
+                    this.setAttributeSilent("selected", "true");
                 }
                 else
                 {

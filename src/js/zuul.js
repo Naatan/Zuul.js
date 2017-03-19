@@ -107,16 +107,11 @@ class BaseElement extends HTMLElement {
             this.onAttributeChanged.apply(this, arguments);
     }
     
-    attr(name, value)
+    setAttributeSilent(name, value)
     {
-        if (value !== undefined)
-        {
-            this._blockAttrChangeEvent = true;
-            this.setAttribute(name, value);
-            this._blockAttrChangeEvent = false;
-        }
-        
-        return this.getAttribute(name);
+        this._blockAttrChangeEvent = true;
+        this.setAttribute(name, value);
+        this._blockAttrChangeEvent = false;
     }
     
 }
