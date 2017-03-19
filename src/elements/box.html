@@ -2,14 +2,21 @@
     
     <template>
         <style>
-            
+
             :host
             {
-                display: flex;
+                display: block;
+                float: left;
                 justify-content: flex-start;
                 align-items: stretch;
             }
-            
+
+            :host([flex])
+            {
+                display: flex;
+                float: none;
+            }
+
             :host([align="start"])
             {
                 justify-content: flex-start;
