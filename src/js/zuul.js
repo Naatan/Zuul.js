@@ -65,9 +65,9 @@ class BaseElement extends HTMLElement {
         var template = document.querySelector(`z-element[name="${element}Element"] template`);
         if (template)
         {
-            template = template.cloneNode(true);
-            this._shadowRoot = this.attachShadow({mode: 'open'});
-            this._shadowRoot.appendChild(template.content);
+            template = document.importNode(template.content, true);
+            this.shadowDom = this.attachShadow({mode: 'open'});
+            this.shadowDom.appendChild(template);
         }
         
         if ("onCreated" in this)
