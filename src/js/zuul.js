@@ -45,6 +45,12 @@ class ZuulHelpers {
     {
         return value != "0" && value != "false" && !! value;
     }
+
+    getCssVariable(element, name)
+    {
+        var style = window.getComputedStyle(element);
+        return style.getPropertyValue(`--${name}`).trim();
+    }
     
 }
 var zuulHelpers = new ZuulHelpers();
