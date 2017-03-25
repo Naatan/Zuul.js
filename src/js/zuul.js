@@ -49,88 +49,9 @@ class ZuulHelpers {
 }
 var zuulHelpers = new ZuulHelpers();
 
-class BaseElement extends HTMLElement {
-    
-    // Fires when an instance of the element is created.
-    createdCallback()
-    {
-        this._blockAttrChangeEvent = false;
+class ImportElement extends HTMLElement {
 
-        if (this.hasAttribute("flex"))
-            this.style.flexGrow = this.getAttribute("flex");
-        
-        if (this.hasAttribute("height"))
-            this.style.height = zuulHelpers.parsePx(this.getAttribute("height"));
-
-        if (this.hasAttribute("width"))
-            this.style.width = zuulHelpers.parsePx(this.getAttribute("width"));
-
-        var element = this.nodeName.replace(/^Z-/, "");
-        element = element[0].toUpperCase() + element.slice(1).toLowerCase();
-        var template = document.querySelector(`z-element[name="${element}Element"] template`);
-        if (template)
-        {
-            template = document.importNode(template.content, true);
-            this.shadowDom = this.attachShadow({mode: 'open'});
-            this.shadowDom.appendChild(template);
-        }
-        
-        if ("onCreated" in this)
-            this.onCreated.apply(this, arguments);
-    }
-    
-    // Fires when an instance was inserted into the document.
     attachedCallback()
-    {
-        if ("onAttached" in this)
-            this.onAttached.apply(this, arguments);
-    }
-    
-    // Fires when an instance was removed from the document.
-    detachedCallback()
-    {
-        if ("onDetached" in this)
-            this.onDetached.apply(this, arguments);
-    }
-    
-    // Fires when an attribute was added, removed, or updated.
-    attributeChangedCallback(attr, oldVal, newVal)
-    {
-        if (this._blockAttrChangeEvent)
-            return;
-
-        if (attr == "flex")
-            this.style.flexGrow = newVal;
-            
-        if (attr == "height")
-            this.style.height = zuulHelpers.parsePx(newVal);
-            
-        if (attr == "width")
-            this.style.width = zuulHelpers.parsePx(newVal);
-            
-        if ("onAttributeChanged" in this)
-            this.onAttributeChanged.apply(this, arguments);
-    }
-    
-    setAttributeSilent(name, value)
-    {
-        this._blockAttrChangeEvent = true;
-        this.setAttribute(name, value);
-        this._blockAttrChangeEvent = false;
-    }
-    
-    removeAttributeSilent(name)
-    {
-        this._blockAttrChangeEvent = true;
-        this.removeAttribute(name);
-        this._blockAttrChangeEvent = false;
-    }
-
-}
-
-class ImportElement extends BaseElement {
-    
-    onAttached()
     {
         var wrapper = document.getElementById("__zuul-elements");
         if ( ! wrapper)
@@ -171,6 +92,7 @@ class ImportElement extends BaseElement {
 
 ImportElement.preset = {
     "zuul": [
+        "elements/base.html",
         "elements/box.html",
         "elements/vbox.html",
         "elements/hbox.html",
