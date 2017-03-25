@@ -1,0 +1,194 @@
+<z-element name="TextboxElement" extends="HboxElement">
+
+    <template>
+        <style>
+            :host
+            {
+                background: var(--z-formfield-background);
+                border: var(--z-formfield-border);
+                display: flex;
+            }
+
+            :host textarea
+            {
+                background: transparent;
+                border: 0;
+                display: flex;
+                flex-grow: 1;
+                resize: none;
+                outline: 0;
+                font-size: var(--z-font-size);
+                line-height: var(--z-font-size);
+                font-family: var(--z-font-family);
+            }
+
+            :host(:not([multiline])) textarea
+            {
+                height: var(--z-font-size);
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            :host([multiline][rows])
+            {
+                height: calc(var(--z-font-size) * attr(rows));
+            }
+
+            :host([multiline]) textarea
+            {
+                min-height: calc(var(--z-font-size) * 2);
+            }
+        </style>
+
+        <textarea rows="1"></textarea>
+    </template>
+
+    <script>
+
+        class TextboxElement {
+
+            onCreated()
+            {
+                this.textarea = this.shadowDom.querySelector(":host > textarea");
+                
+                if (this.hasAttribute("value"))
+                {
+                    this.textarea.value = this._toSingleLine(this.getAttribute("value"));
+                }
+                else
+                {
+                    // Adding <slot> into <textarea> will yield unwanted results,
+                    // since textarea's cannot contain html. So work around it.
+                    this.textarea.value = this.innerHTML;
+                    this._enforceMultilinePref();
+                }
+
+                if (zuulHelpers.bool(this.getAttribute("trim")))
+                {
+                    this.textarea.value = this.textarea.value.trim();
+                }
+
+                this.addEventListener("paste", this._enforceMultilinePref);
+                this.addEventListener("keypress", (e) =>
+                {
+                    if (e.keyCode == 13)
+                    {
+                        e.preventDefault();
+                        return false;
+                    }
+                    
+                    this._enforceMultilinePref();
+                });
+                
+                this.addEventListener("focus", () => this.classList.add("focus"));
+                this.addEventListener("blur", () => this.classList.remove("focus"));
+
+                if (this.hasAttribute("rows"))
+                    this.rows = this.getAttribute("rows");
+
+                if (this.hasAttribute("cols"))
+                    this.cols = this.getAttribute("cols");
+            }
+
+            onAttached()
+            {
+            }
+
+            onDetached()
+            {
+            }
+
+            onAttributeChanged(attr, oldVal, newVal)
+            {
+                if (attr == "value")
+                    this.value = newVal;
+
+                if (attr == "rows")
+                    this.rows = newVal;
+
+                if (attr == "cols")
+                    this.cols = newVal;
+
+                if (attr == "multiline")
+                    this.multiline = newVal;
+            }
+            
+            get value()
+            {
+                return this.textarea.value;
+            }
+
+            set value(value)
+            {
+                this.textarea.value = value;
+            }
+
+            get multiline()
+            {
+                return zuulHelpers.bool(this.getAttribute("multiline"));
+            }
+
+            set multiline(value)
+            {
+                this.setAttributeSilent("multiline", zuulHelpers.bool(value));
+                
+                multiline = zuulHelpers.bool(value);
+
+                if ( ! multiline)
+                {
+                    this._enforceMultilinePref();
+                    this.removeAttributeSilent("multiline");
+                }
+            }
+            
+            get rows()
+            {
+                this.getAttribute("rows");
+            }
+
+            set rows(value)
+            {
+                value = Number(value);
+                var size = zuulHelpers.getCssVariable(this, "z-font-size");
+
+                this.setAttributeSilent("rows", value);
+                this.style.height = `calc(${size} * ${value})`;
+            }
+            
+            get cols()
+            {
+                this.getAttribute("cols");
+            }
+
+            set cols(value)
+            {
+                value = Number(value);
+                var size = zuulHelpers.getCssVariable(this, "z-font-size");
+
+                this.setAttributeSilent("cols", value);
+                this.style.width = `calc(${size} * ${value})`;
+            }
+            
+            _enforceMultilinePref()
+            {
+                if (this.multiline)
+                    return;
+                
+                setTimeout(() =>
+                {
+                    this.textarea.value = this._toSingleLine(this.textarea.value);
+                }, 100);
+            }
+
+            _toSingleLine(value)
+            {
+                return value.replace(/\n|\r/g, "");
+            }
+
+        }
+
+        document.registerElement('z-textbox', TextboxElement);
+
+    </script>
+
+</z-element>

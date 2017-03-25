@@ -108,6 +108,7 @@ ImportElement.preset = {
         "elements/checkbox.html",
         "elements/radiogroup.html",
         "elements/radio.html",
+        "elements/textbox.html",
     ]
 };
 
