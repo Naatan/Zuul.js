@@ -243,7 +243,17 @@ class ZElement extends HTMLElement {
     
     appendToTemplate(element)
     {
-        this.querySelector("template").content.appendChild(element);
+        var parent = this.querySelector("template").content;
+        var firstChild = parent.childNodes[0];
+        
+        if ( ! firstChild)
+        {
+            parent.appendChild(element);
+        }
+        else
+        {
+            parent.insertBefore(element, firstChild);
+        }
     }
     
     getScript()
