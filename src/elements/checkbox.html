@@ -68,10 +68,10 @@
             {
                 if (attr == "checked")
                 {
-                    newVal = zuulHelpers.falsy(newVal);
+                    newVal = zuulHelpers.bool(newVal);
                     if ( ! newVal)
                     {
-                        // Don't set the checked attribute at all if the value is falsy
+                        // Don't set the checked attribute at all if the value is bool
                         this.removeAttributeSilent("checked");
                     }
                 }
@@ -80,12 +80,12 @@
             get checked()
             {
                 var value = this.getAttribute("checked");
-                return zuulHelpers.falsy(value);
+                return zuulHelpers.bool(value);
             }
 
             set checked(value)
             {
-                value = zuulHelpers.falsy(value);
+                value = zuulHelpers.bool(value);
                 if (value)
                 {
                     this.setAttributeSilent("checked", "true");

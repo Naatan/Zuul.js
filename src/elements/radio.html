@@ -79,10 +79,10 @@
             {
                 if (attr == "selected")
                 {
-                    newVal = zuulHelpers.falsy(newVal);
+                    newVal = zuulHelpers.bool(newVal);
                     if ( ! newVal)
                     {
-                        // Don't set the selected attribute at all if the value is falsy
+                        // Don't set the selected attribute at all if the value is bool
                         this.removeAttributeSilent("selected");
                     }
                 }
@@ -91,12 +91,12 @@
             get selected()
             {
                 var value = this.getAttribute("selected");
-                return zuulHelpers.falsy(value);
+                return zuulHelpers.bool(value);
             }
 
             set selected(value)
             {
-                value = zuulHelpers.falsy(value);
+                value = zuulHelpers.bool(value);
                 if (value)
                 {
                     var oldSelected = this.radiogroup.selectedItem;

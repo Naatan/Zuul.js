@@ -41,7 +41,7 @@ class ZuulHelpers {
         element.dispatchEvent(event);
     }
 
-    falsy(value)
+    bool(value)
     {
         return value != "0" && value != "false" && !! value;
     }

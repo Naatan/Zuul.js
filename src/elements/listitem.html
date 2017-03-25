@@ -56,12 +56,12 @@
             get _selected()
             {
                 var value = this.getAttribute("selected");
-                return zuulHelpers.falsy(value);
+                return zuulHelpers.bool(value);
             }
 
             set _selected(value)
             {
-                value = zuulHelpers.falsy(value);
+                value = zuulHelpers.bool(value);
                 if (value)
                 {
                     this.setAttributeSilent("selected", "true");
