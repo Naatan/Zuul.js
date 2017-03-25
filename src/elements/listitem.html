@@ -1,4 +1,4 @@
-<z-element name="ListitemElement" extends="HboxElement">
+<z-element name="ListitemElement" extends="HboxElement" depends="ListboxElement">
     
     <template>
         <style>
@@ -10,8 +10,8 @@
 
             :host([selected="true"])
             {
-                background: Highlight;
-                color: HighlightText;
+                background: var(--z-selection-background);
+                color: var(--z-selection-foreground);
             }
         </style>
 

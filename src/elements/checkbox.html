@@ -15,18 +15,18 @@
 
             :host [anonid="checkbox"]
             {
-                width: 0.75rem;
-                height: 0.75rem;
-                margin-right: 0.5rem;
+                width: calc(var(--z-font-size) / 1.5);
+                height: calc(var(--z-font-size) / 1.5);
+                margin-right: calc(var(--z-font-size) / 2);
 
-                background: Window;
-                border: 1px solid ThreeDShadow;
+                background: var(--z-formfield-background);
+                border: var(--z-formfield-border);
             }
 
             :host([checked]) [anonid="checkbox"]
             {
-                box-shadow: inset 0 0 0 2px Window;
-                background: ThreeDDarkShadow;
+                box-shadow: inset 0 0 0 2px var(--z-formfield-background);
+                background: var(--z-formfield-foreground);
             }
         </style>
 

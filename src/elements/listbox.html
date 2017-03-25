@@ -4,11 +4,14 @@
         <style>
             :host
             {
-                min-height: 2rem;
+                min-height: calc(var(--z-font-size) * 2);
                 overflow: auto;
 
                 user-select: none;
                 cursor: default;
+
+                background: var(--z-formfield-background);
+                border: var(--z-formfield-border);
             }
         </style>
         
@@ -25,6 +28,13 @@
             {
                 this.selectedItems = [];
                 this._seltype = this.getAttribute("seltype") || "single";
+
+                // need to have tabindex attribute otherwise focus/blur won't fire
+                if ( ! this.hasAttribute("tabindex"))
+                    this.setAttribute("tabindex", -1);
+
+                this.addEventListener("focus", () => this.classList.add("focus"));
+                this.addEventListener("blur", () => this.classList.remove("focus"));
             }
             
             onAttached()
