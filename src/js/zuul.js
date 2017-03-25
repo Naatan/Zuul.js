@@ -184,23 +184,36 @@ ImportElement.preset = {
 };
 
 class ZElement extends HTMLElement {
-    
+
     // Fires when an instance of the element is created.
     createdCallback()
     {
         this.name = this.getAttribute("name");
-        
+
         console.debug(`Created ${this.name} base element`);
-        
-        // Ensure the parent element is ready before creating this one
+
+        var dependsOn = [];
         if (this.hasAttribute("extends"))
+            dependsOn = dependsOn.concat(this.getAttribute("extends").split(","));
+        if (this.hasAttribute("depends"))
+            dependsOn = dependsOn.concat(this.getAttribute("depends").split(","));
+
+        // Ensure the elements this one depends on are ready before creating this one
+        if (dependsOn.length)
         {
-            var parent = this.getAttribute("extends");
-            if (parent != "BaseElement" && ! zuul.getElement(parent))
+            for (let parent of dependsOn)
             {
-                var args = Array.prototype.slice(arguments, 0);
-                document.addEventListener(`registered_${parent}`, () => this.createdCallback.apply(this, args));
-                return;
+                if (parent != "BaseElement" && ! zuul.getElement(parent))
+                {
+                    var timer = setInterval(() => console.warn(`Still waiting for ${parent} ..`), 5000);
+                    var args = Array.prototype.slice(arguments, 0);
+                    document.addEventListener(`registered_${parent}`, () =>
+                    {
+                        clearInterval(timer);
+                        this.createdCallback.apply(this, args);
+                    });
+                    return;
+                }
             }
         }
         
@@ -209,7 +222,12 @@ class ZElement extends HTMLElement {
 
         if (this.hasAttribute("extends"))
         {
-            this.extend(this.getAttribute("extends"));
+            var isPrimary = true;
+            for (let parent of this.getAttribute("extends").split(","))
+            {
+                this.extend(parent, isPrimary);
+                isPrimary = false;
+            }
         }
         
         var script = this.getScript();
@@ -264,7 +282,7 @@ class ZElement extends HTMLElement {
         return result;
     }
     
-    extend(name)
+    extend(name, isPrimary = false)
     {
         var element = zuul.getElement(name);
         var parentScript;
@@ -287,15 +305,18 @@ class ZElement extends HTMLElement {
             parentScript = element.getScript();
         }
         
-        var script = this.getScript();
-        if (script)
+        if (isPrimary)
         {
-            var rx = new RegExp("(class\\s+" + this.name + ")(\\s*(?:{|$))");
-            script.innerText = script.innerText.replace(rx, `$1 extends ${name}$2`);
-        }
-        else if (parentScript)
-        {
-            this.appendChild(parentScript.cloneNode(true));
+            var script = this.getScript();
+            if (script)
+            {
+                var rx = new RegExp("(class\\s+" + this.name + ")(\\s*(?:{|$))");
+                script.innerText = script.innerText.replace(rx, `$1 extends ${name}$2`);
+            }
+            else if (parentScript)
+            {
+                this.appendChild(parentScript.cloneNode(true));
+            }
         }
     }
     
