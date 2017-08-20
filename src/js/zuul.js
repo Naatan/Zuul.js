@@ -2,27 +2,61 @@ class Zuul {
     
     constructor()
     {
+        this.loaded = false;
         this.elements = {};
+        this._importQueue = [];
     }
     
     registerElement(element)
     {
         if (element.name in this.elements)
             return console.error(`Element ${element.name} has already been registered`);
-        
+
         this.elements[element.name] = element;
-        
+
         var event = new CustomEvent(`registered_${element.name}`);
         document.dispatchEvent(event);
-        
+
         console.debug(`Registered ${element.name}`);
     }
-    
+
     getElement(name)
     {
         return this.elements[name] || null;
     }
+
+    get importQueue()
+    {
+        return this._importQueue;
+    }
     
+    set importQueue(value)
+    {
+        this._importQueue = value;
+        
+        // If the queue is complete fire a load event when ready
+        if ( ! this._importQueue.length && ! this.loaded)
+        {
+            var fireLoadEvent = () =>
+            {
+                delete this._loadedTimer;
+                zuulHelpers.fire(window, "z-load");
+            };
+
+            if (document.readyState == "complete")
+            {
+                this._loadedTimer = setTimeout(fireLoadEvent, 50);
+            }
+            else
+            {
+                window.addEventListener("load", fireLoadEvent);
+            }
+        }
+        else if (this._loadedTimer)
+        {
+            clearTimeout(this._loadedTimer);
+        }
+    }
 }
 var zuul = new Zuul();
 
@@ -68,6 +102,12 @@ class ImportElement extends HTMLElement {
             document.body.appendChild(wrapper);
         }
         
+        var path = "";
+        if (this.hasAttribute("path"))
+        {
+            path = this.getAttribute("path");
+        }
+
         var hrefs = [];
         if (this.hasAttribute("href"))
         {
@@ -80,8 +120,10 @@ class ImportElement extends HTMLElement {
         
         hrefs.forEach((href) =>
         {
+            zuul.importQueue.push(href);
+            
             var http = new XMLHttpRequest();
-            http.open('get', href);
+            http.open('get', path + href);
             http.onreadystatechange = handleResponse;
             http.send(null);
     
@@ -90,6 +132,7 @@ class ImportElement extends HTMLElement {
                 if (http.readyState == 4)
                 {
                     wrapper.insertAdjacentHTML("beforeend", http.responseText.trim());
+                    zuul.importQueue = zuul.importQueue.filter((v) => v != href);
                 }
             }
         });
@@ -132,7 +175,7 @@ class ZElement extends HTMLElement {
         {
             for (let parent of dependsOn)
             {
-                if (parent != "BaseElement" && ! zuul.getElement(parent))
+                if ( ! zuul.getElement(parent))
                 {
                     var timer = setInterval(() => console.warn(`Still waiting for ${parent} ..`), 5000);
                     var args = Array.prototype.slice(arguments, 0);
@@ -166,7 +209,7 @@ class ZElement extends HTMLElement {
             newScript.innerHTML = script.innerText;
             script.parentNode.replaceChild(newScript, script); // Force run script
         }
-        
+
         zuul.registerElement(this);
     }
     
@@ -199,7 +242,11 @@ class ZElement extends HTMLElement {
     {
         var result = [];
         
-        for (let element of this.getTemplate().childNodes)
+        var template = this.getTemplate();
+        if ( ! template || ! template.childNodes)
+            return [];
+
+        for (let element of template.childNodes)
         {
             if (element.nodeName == "STYLE")
                 result.push(element);
@@ -212,7 +259,11 @@ class ZElement extends HTMLElement {
     {
         var result = [];
         
-        for (let element of this.getTemplate().childNodes)
+        var template = this.getTemplate();
+        if ( ! template || ! template.childNodes)
+            return [];
+
+        for (let element of template.childNodes)
         {
             if (element.nodeName != "STYLE" && element.nodeName != "#text")
                 result.push(element);
@@ -247,12 +298,7 @@ class ZElement extends HTMLElement {
         if (isPrimary)
         {
             var script = this.getScript();
-            if (script)
-            {
-                var rx = new RegExp("(class\\s+" + this.name + ")(\\s*(?:{|$))");
-                script.innerText = script.innerText.replace(rx, `$1 extends ${name}$2`);
-            }
-            else if (parentScript)
+            if ( ! script && parentScript)
             {
                 this.appendChild(parentScript.cloneNode(true));
             }

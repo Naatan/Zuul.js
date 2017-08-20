@@ -26,7 +26,6 @@
     </template>
 
     <script>
-
         class BaseElement extends HTMLElement { /* This is the ONLY element that should extend this way */
 
             // Fires when an instance of the element is created.
@@ -44,13 +43,17 @@
                     this.style.width = zuulHelpers.parsePx(this.getAttribute("width"));
 
                 var element = this.nodeName.replace(/^Z-/, "");
-                element = element[0].toUpperCase() + element.slice(1).toLowerCase();
+                element = element.toLowerCase().replace(/(?:^|-)([a-z])/g, (g) => g.substr(-1).toUpperCase());
                 var template = document.querySelector(`z-element[name="${element}Element"] template`);
                 if (template)
                 {
                     template = document.importNode(template.content, true);
                     this.shadowDom = this.attachShadow({mode: 'open'});
                     this.shadowDom.appendChild(template);
+                }
+                else
+                {
+                    console.warn(`Element has no template: ${element}`);
                 }
 
                 if ("onCreated" in this)
@@ -102,6 +105,11 @@
                 this._blockAttrChangeEvent = true;
                 this.removeAttribute(name);
                 this._blockAttrChangeEvent = false;
+            }
+
+            get isZuul()
+            {
+                return true;
             }
 
         }

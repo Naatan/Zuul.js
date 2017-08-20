@@ -51,7 +51,7 @@ gulp.task('watchers', ['default'], function ()
 });
 
 gulp.task('webserver', ['watchers'], function() {
-  gulp.src('dist')
+  gulp.src('.')
     .pipe(webserver({
         livereload: true
     }));

@@ -1,4 +1,4 @@
-<z-element name="RadioElement" extends="HboxElement">
+<z-element name="RadioElement" extends="HboxElement" depends="RadiogroupElement">
 
     <template>
         <style>
@@ -40,7 +40,7 @@
 
     <script>
 
-        class RadioElement {
+        class RadioElement extends HboxElement {
 
             onCreated()
             {
