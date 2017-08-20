@@ -4,16 +4,20 @@
   "main": "electron.js",
   "description": "",
   "devDependencies": {
+    "chrome-launcher": "^0.6.0",
+    "chrome-remote-interface": "^0.24.4",
     "electron": "^1.6.2",
     "electron-connect": "^0.6.1",
     "gulp": "*",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-flatten": "^0.3.1",
     "gulp-sass": "*",
-    "gulp-webserver": "^0.9.1"
+    "gulp-webserver": "^0.9.1",
+    "mocha": "^3.5.0",
+    "static-server": "^2.0.4"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp && mocha tests"
   },
   "author": "",
   "license": "MIT"
