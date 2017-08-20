@@ -11,9 +11,18 @@ This will effectively mean two things
 Note that while this project uses NodeJS and Electron the actual source code for Zuul is pure JavaScript and does not depend on NodeJS. NodeJS is only used to build the distributable, and Electron to test it.
 
 ```
-npm install
-npm install -g gulp
+# Prepare
+yarn install
+yarn global add gulp mocha
 
+# Build
+gulp
+
+# Test with kitchensink
 gulp electron  # OR
-gulp webserver
+gulp webserver # Navigate to http://localhost:8000/dist/kitchensink.html
+
+# Run tests
+npm test       # OR
+mocha tests
 ```
