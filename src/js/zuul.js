@@ -91,7 +91,7 @@ var zuulHelpers = new ZuulHelpers();
 
 class ImportElement extends HTMLElement {
 
-    attachedCallback()
+    connectedCallback()
     {
         var wrapper = document.getElementById("__zuul-elements");
         if ( ! wrapper)
@@ -158,7 +158,13 @@ ImportElement.preset = {
 class ZElement extends HTMLElement {
 
     // Fires when an instance of the element is created.
-    createdCallback()
+    constructor()
+    {
+      super();
+      this.create();
+    }
+
+    create()
     {
         this.name = this.getAttribute("name");
 
@@ -182,7 +188,7 @@ class ZElement extends HTMLElement {
                     document.addEventListener(`registered_${parent}`, () =>
                     {
                         clearInterval(timer);
-                        this.createdCallback.apply(this, args);
+                        this.create.apply(this, args);
                     });
                     return;
                 }
@@ -307,5 +313,5 @@ class ZElement extends HTMLElement {
     
 }
 
-document.registerElement('z-import', ImportElement);
-document.registerElement('z-element', ZElement);
+customElements.define('z-import', ImportElement);
+customElements.define('z-element', ZElement);

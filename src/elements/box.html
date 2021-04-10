@@ -5,7 +5,7 @@
 
             :host
             {
-                display: block;
+                display: flex;
                 float: left;
                 justify-content: flex-start;
                 align-items: stretch;
@@ -13,7 +13,6 @@
 
             :host([flex])
             {
-                display: flex;
                 float: none;
             }
 
@@ -55,8 +54,8 @@
     <script>
         
         class BoxElement extends BaseElement {}
-        document.registerElement('z-box', BoxElement);
-        
+        customElements.define('z-box', BoxElement);
+
     </script>
     
 </z-element>

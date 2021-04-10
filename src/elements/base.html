@@ -29,8 +29,10 @@
         class BaseElement extends HTMLElement { /* This is the ONLY element that should extend this way */
 
             // Fires when an instance of the element is created.
-            createdCallback()
+            constructor()
             {
+                super();
+
                 this._blockAttrChangeEvent = false;
 
                 if (this.hasAttribute("flex"))
@@ -61,14 +63,14 @@
             }
 
             // Fires when an instance was inserted into the document.
-            attachedCallback()
+            connectedCallback()
             {
                 if ("onAttached" in this)
                     this.onAttached.apply(this, arguments);
             }
 
             // Fires when an instance was removed from the document.
-            detachedCallback()
+            disconnectedCallback()
             {
                 if ("onDetached" in this)
                     this.onDetached.apply(this, arguments);
